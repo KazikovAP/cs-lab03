@@ -1,7 +1,5 @@
 #include "histogram.h"
 
-using namespace std;
-
 void find_minmax(const vector<double> numbers, double& min, double& max)
 {
     min = numbers[0];
