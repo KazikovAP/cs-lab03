@@ -112,7 +112,7 @@ void show_histogram_svg(const vector<size_t>& bins)
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
     double top = 0;
-    svg_begin(400, 300);
+    svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     for (size_t bin : bins)
     {
         const double bin_width = BLOCK_WIDTH * bin;
@@ -135,7 +135,7 @@ int main()
     cin >> bin_count;
     double min, max;
 
-    find_minmax(numbers,min,max);
+    find_minmax(numbers, min, max);
     const auto bins = make_histogram(numbers, bin_count);
     show_histogram_svg(bins);
     return 0;
