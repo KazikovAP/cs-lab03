@@ -50,4 +50,5 @@ main() {
    test_negative();
    test_same();
    test_single();
+   test_nothing();
 }
