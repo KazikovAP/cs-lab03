@@ -41,30 +41,10 @@ vector<string> colors(size_t bin_count)
     vector<string> cin_colors(bin_count);
     for (size_t i = 0; i < bin_count; i++)
     {
-        getline(cin,cin_colors);
+        getline(cin, cin_colors[i]);
     }
     return cin_colors;
 }
-
-vector <string> colors(const vector<string>& colors, const size_t count, size_t number_count)
-{
-
-    double min;
-    double max;
-    find_minmax(numbers, min, max);
-    vector<string> colors(bin_count,"");
-    for (size_t i=0; i<number_count; i++)
-    {
-        for (double number : numbers)
-        {
-            size_t bin = (size_t)((number - min) / (max - min) * count);
-            bin_count[i]=colors[i];
-        }
-
-    }
-    return colors;
-}
-
 void show_histogram_text(const vector<size_t> &bins)
 {
 
@@ -134,7 +114,7 @@ void svg_rect(double x, double y, double width, double height,string stroke,stri
     cout << "<rect x='"<<x<< "' y='" <<y<<"' width='" <<width <<"' height='" <<height <<"' stroke='"<<stroke<<"' fill='"<<fill<<"'/>";
 }
 void show_histogram_svg(const vector<size_t>& bins)
-{
+{   vector<string> colors(bin_count);
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
