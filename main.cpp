@@ -45,6 +45,7 @@ vector<string> colors(size_t bin_count)
     }
     return cin_colors;
 }
+
 void show_histogram_text(const vector<size_t> &bins)
 {
 
@@ -113,8 +114,10 @@ void svg_rect(double x, double y, double width, double height,string stroke,stri
 {
     cout << "<rect x='"<<x<< "' y='" <<y<<"' width='" <<width <<"' height='" <<height <<"' stroke='"<<stroke<<"' fill='"<<fill<<"'/>";
 }
-void show_histogram_svg(const vector<size_t>& bins)
-{   vector<string> colors(bin_count);
+void show_histogram_svg(const vector<size_t>& bins, size_t bin_count)
+{
+    vector<string> colors_vec(bin_count);
+    colors_vec=colors(bin_count);
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
@@ -129,7 +132,7 @@ void show_histogram_svg(const vector<size_t>& bins)
            {
         const double bin_width = BLOCK_WIDTH * bin;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,colors[t]);
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,colors_vec[t],colors_vec[t]);
         top += BIN_HEIGHT;
     t++;
     }
@@ -150,6 +153,6 @@ int main()
 
     find_minmax(numbers, min, max);
     const auto bins = make_histogram(numbers, bin_count);
-    show_histogram_svg(bins);
+    show_histogram_svg(bins, bin_count);
     return 0;
 }
