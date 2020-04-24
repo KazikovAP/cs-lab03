@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "histogram.h"
+#include "lab03svg.h"
 
 using namespace std;
 
@@ -34,16 +35,6 @@ vector <size_t> make_histogram(const vector<double> &numbers,size_t bin_count)
         bins[bin]++;
     }
     return bins;
-}
-
-vector<string> colors(size_t bin_count)
-{
-    vector<string> cin_colors(bin_count);
-    for (size_t i = 0; i < bin_count; i++)
-    {
-        getline(cin, cin_colors[i]);
-    }
-    return cin_colors;
 }
 
 void show_histogram_text(const vector<size_t> &bins)
