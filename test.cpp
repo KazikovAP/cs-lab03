@@ -1,4 +1,5 @@
 #include "histogram.h"
+#include "lab03svg.h"
 
 #include <cassert>
 
@@ -44,6 +45,19 @@ void test_nothing(){
     assert(max == 3);
 }
 
+void test_colors(){
+size_t bin_count = 2;
+vector<string> colors(bin_count);
+assert(colors_vec[0] == "green");
+assert(colors_vec[1] == "blue");
+}
+
+void test_colors1(){
+size_t bin_count = 1;
+vector<string> colors(bin_count);
+assert(colors_vec[0] == "red");
+}
+
 int
 main() {
    test_positive();
@@ -51,4 +65,6 @@ main() {
    test_same();
    test_single();
    test_nothing();
+   test_colors();
+   test_colors1();
 }
