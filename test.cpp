@@ -46,14 +46,19 @@ void test_nothing(){
 }
 
 void test_colors(){
-size_t bin_count = 2;
-vector<string> colors(bin_count);
+size_t bin_count = 0;
+vector<string> colors_vec(bin_count);
+colors_vec=colors(bin_count);
+vector<string> colors();
 assert(colors_vec[0] == "green");
-assert(colors_vec[1] == "blue");
+assert(colors_vec[0] == "grey");
+assert(colors_vec[0] == "yellow");
 }
 
 void test_colors1(){
 size_t bin_count = 1;
+vector<string> colors_vec(bin_count);
+colors_vec=colors(bin_count);
 vector<string> colors(bin_count);
 assert(colors_vec[0] == "red");
 }
