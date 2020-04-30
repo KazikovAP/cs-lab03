@@ -41,25 +41,21 @@ void test_nothing(){
     double min = 0;
     double max = 0;
     find_minmax({}, min, max);
-    assert(min == 3);
-    assert(max == 3);
+    assert(min == 0);
+    assert(max == 0);
 }
 
 void test_colors(){
 size_t bin_count = 0;
 vector<string> colors_vec(bin_count);
 colors_vec=colors(bin_count);
-vector<string> colors();
-assert(colors_vec[0] == "green");
-assert(colors_vec[0] == "grey");
-assert(colors_vec[0] == "yellow");
+assert(colors_vec.size() == 0);
 }
 
 void test_colors1(){
 size_t bin_count = 1;
 vector<string> colors_vec(bin_count);
 colors_vec=colors(bin_count);
-vector<string> colors(bin_count);
 assert(colors_vec[0] == "red");
 }
 
