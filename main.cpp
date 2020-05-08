@@ -76,6 +76,16 @@ Input download(const string& address)
     return read_input(buffer, false);
 }
 
+size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
+{
+    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+    const char* char_items = reinterpret_cast<const char*>(items);
+    size_t data_size;
+    data_size=item_size* item_count;
+    buffer->write(char_items, data_size);
+    return data_size;
+}
+
 void show_histogram_text(const vector<size_t> &bins)
 {
 
