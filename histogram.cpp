@@ -1,18 +1,25 @@
 #include "histogram.h"
 
-void find_minmax(const vector<double>& numbers, double& min, double& max)
+void find_minmax(Input data, double& min, double& max)
 {
-    min = numbers[0];
-    max = numbers[0];
-    for (double number : numbers)
+    if (data.numbers.size()>0)
+
+
     {
-        if (number < min)
+        min = data.numbers[0];
+        max = data.numbers[0];
+
+
+        for (double number : data.numbers)
         {
-            min = number;
-        }
-        if (number > max)
-        {
-            max = number;
+            if (number < min)
+            {
+                min = number;
+            }
+            if (number > max)
+            {
+                max = number;
+            }
         }
     }
 }
