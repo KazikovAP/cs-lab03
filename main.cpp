@@ -41,17 +41,17 @@ read_input(istream& in, bool prompt)
     Input data;
 
     if(prompt==true)
-    cerr << "Enter number count:";
+        cerr << "Enter number count:";
     size_t number_count;
     cin >> number_count;
 
     if(prompt==true)
-    cerr <<"Enter numbers:";
+        cerr <<"Enter numbers:";
     data.numbers = input_numbers(in, number_count);
 
     size_t bin_count;
     if(prompt==true)
-    cerr <<"Enter bin count:";
+        cerr <<"Enter bin count:";
     cin >> data.bin_count;
 
     return data;
@@ -102,8 +102,24 @@ void show_histogram_text(const vector<size_t> &bins)
     }
 }
 
-int
-main()
+int main(int argc,char*argv[])
+{
+    if(argc>1)
+    {
+        CURL* curl =curl_easy_init();
+        size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
+        {
+            stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+            const char* char_items = reinterpret_cast<const char*>(items);
+            size_t data_size;
+            data_size=item_size* item_count;
+            buffer->write(char_items, data_size);
+            return data_size;
+        }
+    }
+
+
+
 {
     curl_global_init(CURL_GLOBAL_ALL);
     const auto input = read_input(cin, true);
@@ -113,4 +129,5 @@ main()
     show_histogram_svg(bins);
 
     return 0;
+}
 }
