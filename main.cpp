@@ -18,115 +18,65 @@ vector<double> input_numbers(istream& in, size_t count)
     return result;
 }
 
-vector<size_t> make_histogram (Input data)
-{
-    double min = 0;
-    double max = 0;
-    find_minmax(data, min, max);
-    vector<size_t> bins(data.bin_count);
-    for (double number : data.numbers)
-    {
-        size_t bin = (size_t)((number - min) / (max - min) * data.bin_count);
-        if (bin == data.bin_count)
-        {
-            bin--;
-        }
-        bins[bin]++;
-    }
-    return bins;
-}
-
 Input
 read_input(istream& in, bool prompt)
 {
     Input data;
-
-    if(prompt==true)
-        cerr << "Enter number count:";
     size_t number_count;
-    cin >> number_count;
+    if (prompt)
+    {
+        cerr << "Enter number count:";
+        in >> number_count;
 
-    if(prompt==true)
-        cerr <<"Enter numbers:";
-    data.numbers = input_numbers(in, number_count);
+        cerr << "Enter numbers:";
+        data.numbers = input_numbers(in, number_count);
 
-    size_t bin_count;
-    if(prompt==true)
-        cerr <<"Enter bin count:";
-    cin >> data.bin_count;
-
+        cerr << "Enter column count:";
+        in >> data.bin_count;
+    }
+    else
+    {
+        in >> number_count;
+        data.numbers = input_numbers(in, number_count);
+        in >> data.bin_count;
+    }
     return data;
 }
 
-Input download(const string& address)
+size_t
+write_data(void* items, size_t item_size, size_t item_count, void* ctx)
 {
-    stringstream buffer;
-    CURL* curl =curl_easy_init();
-    CURLcode res;
-    curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-    res = curl_easy_perform(curl);
-    if(res!=CURLE_OK)
-    {
-        cout<<curl_easy_strerror(curl_easy_perform(curl));
-        exit(1);
-    }
-    curl_easy_cleanup(curl);
-    return read_input(buffer, false);
-}
-
-size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
-{
+    const size_t data_size = item_size * item_count;
+    const char* new_items = reinterpret_cast<const char*>(items);
     stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
-    const char* char_items = reinterpret_cast<const char*>(items);
-    size_t data_size;
-    data_size=item_size* item_count;
-    buffer->write(char_items, data_size);
+    buffer->write(new_items, data_size);
     return data_size;
 }
 
-void show_histogram_text(const vector<size_t> &bins)
+Input
+download(const string& address)
 {
+    stringstream buffer;
 
-    const size_t SCREEN_WIDTH = 80;
-    const size_t MAX_ASTERISK = SCREEN_WIDTH - 4 - 1;
+    curl_global_init(CURL_GLOBAL_ALL);
 
-    size_t max_count = 0;
-    for (size_t count : bins)
+    CURL *curl = curl_easy_init();
+    if(curl)
     {
-        if (count > max_count)
+        CURLcode res;
+        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK)
         {
-            max_count = count;
+            cout << curl_easy_strerror(res) << endl;
+            exit(1);
         }
+
+        curl_easy_cleanup(curl);
     }
-    const bool scaling_needed = max_count > MAX_ASTERISK;
-
-    for (size_t bin : bins)
-    {
-        if (bin < 100)
-        {
-            cout << ' ';
-        }
-        if (bin < 10)
-        {
-            cout << ' ';
-        }
-        cout << bin << "|";
-
-        size_t height = bin;
-        if (scaling_needed)
-        {
-            const double scaling_factor = (double)MAX_ASTERISK / max_count;
-            height = (size_t)(bin * scaling_factor);
-        }
-
-        for (size_t i = 0; i < height; i++)
-        {
-            cout << '*';
-        }
-        cout << '\n';
-    }
+    return read_input(buffer, false);
 }
 
 int main(int argc,char*argv[])
@@ -140,7 +90,7 @@ int main(int argc,char*argv[])
     {
         input=read_input(cin,true);
     }
-    const auto input = read_input(cin, true);
+
 
     const auto bins = make_histogram(input);
 
@@ -148,4 +98,3 @@ int main(int argc,char*argv[])
 
     return 0;
 }
-
