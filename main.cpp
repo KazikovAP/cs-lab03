@@ -64,18 +64,26 @@ download(const string& address)
     if(curl)
     {
         CURLcode res;
-        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-        res = curl_easy_perform(curl);
-        if (res != CURLE_OK)
-        {
-            cout << curl_easy_strerror(res) << endl;
-            exit(1);
-        }
+        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
 
-        curl_easy_cleanup(curl);
+        /* Perform the request */
+        res = curl_easy_perform(curl);
+
+        if(!res)
+        {
+            /* check the size */
+            double dl;
+            res = curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dl);
+            if(!res)
+            {
+                printf("Downloaded %.0f bytes\n", dl);
+                cerr<<dl;
+            }
+        }
     }
+
     return read_input(buffer, false);
 }
 
