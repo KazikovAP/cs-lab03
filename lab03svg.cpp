@@ -38,8 +38,9 @@ void svg_rect(double x, double y, double width, double height,string stroke,stri
     cout << "<rect x='"<<x<< "' y='" <<y<<"' width='" <<width <<"' height='" <<height <<"' stroke='"<<stroke<<"' fill='"<<fill<<"'/>";
 }
 
-void show_histogram_svg(const vector<size_t>& bins, size_t bin_count)
+void show_histogram_svg(const vector<size_t>& bins)
 {
+    size_t bin_count = bins.size();
     vector<string> colors_vec(bin_count);
     colors_vec=colors(bin_count);
     const auto IMAGE_WIDTH = 400;
