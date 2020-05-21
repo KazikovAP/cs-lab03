@@ -78,8 +78,9 @@ download(const string& address)
             res = curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dl);
             if(!res)
             {
-                printf("Downloaded %.0f bytes\n", dl);
-                cerr<<dl;
+                //printf("Downloaded %.0f bytes\n", dl);
+                //cerr<<dl;
+                cerr << "Downloaded:"<<dl<<"bytes\n";
             }
         }
     }
