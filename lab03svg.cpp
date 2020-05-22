@@ -30,7 +30,8 @@ make_info_text1()
     if ((info & 0x40000000) == 0)
     {
         DWORD build = platform;
-        printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
+        buffer << "Windows v" << version_major << "." << version_minor << " (build " << build << ")  "<<'\n';
+        //printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
     }
     return buffer.str();
 }
@@ -109,5 +110,7 @@ void show_histogram_svg(const vector<size_t>& bins, size_t bin_count)
         top += BIN_HEIGHT;
         t++;
     }
+    svg_text(1,top+ 3*TEXT_BASELINE, make_info_text1());
+    svg_text(1,top+ 4*TEXT_BASELINE, make_info_text2());
     svg_end();
 }
