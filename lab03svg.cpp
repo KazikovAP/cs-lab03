@@ -52,14 +52,22 @@ void show_histogram_svg(const vector<size_t>& bins)
     const auto BLOCK_WIDTH = 10;
     double top = 0;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
-     size_t t=0;
+    size_t t=0;
     for (size_t bin : bins)
-           {
+    {
         const double bin_width = BLOCK_WIDTH * bin;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
         svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,colors_vec[t],colors_vec[t]);
         top += BIN_HEIGHT;
-    t++;
+        t++;
     }
     svg_end();
 }
+
+/*string make_info_text()
+{
+    stringstream buffer;
+    // TODO: получить версию системы, записать в буфер.
+    // TODO: получить имя компьютера, записать в буфер.
+    return buffer.str();
+}*/
