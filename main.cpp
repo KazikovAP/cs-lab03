@@ -82,12 +82,12 @@ void show_histogram_text(const vector<size_t> &bins)
     }
 }
 
-DWORD WINAPI GetVersion(void);
-int printf(const char* format, ...);
+//DWORD WINAPI GetVersion(void);
+//int printf(const char* format, ...);
 
 int main()
 {
-    DWORD dwVersion = 0;
+    /*DWORD dwVersion = 0;
     dwVersion = GetVersion();
     DWORD info = GetVersion();
     DWORD mask = 0x0000ffff;
@@ -116,14 +116,9 @@ int main()
     GetComputerNameA(computer_name, &size);
     printf("System directory: %s\n", system_dir); // System directory: C:\Windows
     printf("Computer name: %s\n", computer_name);
+*/
 
-    return 0;
 
-    /*int printf(const char* format, ...);
-    const char* name = "Commander Shepard";
-    int year = 2154;
-    printf("%s was born in %d.\n", name, year);
-    printf("n = %08x\n", 0x1234567);
 
     size_t number_count;
     cerr << "Enter number count: ";
@@ -137,6 +132,6 @@ int main()
 
     find_minmax(numbers, min, max);
     const auto bins = make_histogram(numbers, bin_count);
-    show_histogram_svg(bins, bin_count);*/
-
+    show_histogram_svg(bins, bin_count);
+return 0;
 }
