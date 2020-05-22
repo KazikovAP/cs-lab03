@@ -90,12 +90,15 @@ int main()
     DWORD dwVersion = 0;
     dwVersion = GetVersion();
     DWORD info = GetVersion();
-    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    DWORD mask_major = 0b00000000'00000000'11111111'11111111;
+    DWORD mask = 0x0000ffff;
     DWORD version = info & mask;
+    DWORD platform = info >> 16;
+    DWORD version_major = version & mask_major;
+    DWORD version_minor = version >> 8;
+
     printf("Windows 16x-version is %x\n", version );
     printf("Windows decimal-version is %u\n", version );
-
-
 
     return 0;
 
