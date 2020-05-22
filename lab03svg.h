@@ -3,8 +3,17 @@
 
 #include <vector>
 #include <string>
+#include <windows.h>
+#include <stdio.h>
 
 using namespace std;
+
+DWORD WINAPI GetVersion(void);
+
+
+string make_info_text1();
+string make_info_text2();
+
 
 vector<string> colors(size_t bin_count);
 

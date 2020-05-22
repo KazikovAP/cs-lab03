@@ -1,5 +1,55 @@
 #include <iostream>
 #include "lab03svg.h"
+#include <windows.h>
+#include <stdio.h>
+#include <sstream>
+
+DWORD WINAPI GetVersion(void);
+
+string
+make_info_text1()
+{
+    stringstream buffer;
+
+    DWORD dwVersion = 0;
+    dwVersion = GetVersion();
+    DWORD info = GetVersion();
+    DWORD mask = 0x0000ffff;
+    DWORD mask_major = 0x000000ff;
+
+    DWORD version = info & mask;
+    DWORD platform = info >> 16;
+    DWORD version_major = version & mask_major;
+    DWORD version_minor = version >> 8;
+    printf("Windows 16x-version is %x\n", version );
+    printf("Windows decimal-version is %u\n", version );
+    printf("Platform is %u\n", platform );
+    printf("Windows major version is %u\n", version_major );
+    printf("Windows minor version is %u\n", version_minor );
+
+    if ((info & 0x40000000) == 0)
+    {
+        DWORD build = platform;
+        buffer << "Windows v" << version_major << "." << version_minor << " (build " << build << ")  "<<'\n';
+        //printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
+    }
+    return buffer.str();
+}
+
+string
+make_info_text2()
+{
+    stringstream buffer;
+
+    char system_dir[MAX_PATH];
+    char computer_name[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD size = sizeof(computer_name);
+    GetSystemDirectory(system_dir, MAX_PATH);
+    GetComputerNameA(computer_name, &size);
+    buffer << "Computer Name:" <<  computer_name;
+
+    return buffer.str();
+}
 
 vector<string> colors(size_t bin_count)
 {
@@ -61,6 +111,8 @@ void show_histogram_svg(const vector<size_t>& bins)
         top += BIN_HEIGHT;
         t++;
     }
+    svg_text(1,top+ 3*TEXT_BASELINE, make_info_text1());
+    svg_text(1,top+ 4*TEXT_BASELINE, make_info_text2());
     svg_end();
 }
 
