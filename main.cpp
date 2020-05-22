@@ -90,24 +90,32 @@ int main()
     DWORD dwVersion = 0;
     dwVersion = GetVersion();
     DWORD info = GetVersion();
-    DWORD mask_major = 0b00000000'00000000'11111111'11111111;
     DWORD mask = 0x0000ffff;
+    DWORD mask_major = 0x000000ff;
+
     DWORD version = info & mask;
     DWORD platform = info >> 16;
     DWORD version_major = version & mask_major;
     DWORD version_minor = version >> 8;
-
-    if ((info & 0x80000000) == 0)
-    {
-        DWORD build = platform;
-        printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
-    }
-
     printf("Windows 16x-version is %x\n", version );
     printf("Windows decimal-version is %u\n", version );
     printf("Platform is %u\n", platform );
     printf("Windows major version is %u\n", version_major );
     printf("Windows minor version is %u\n", version_minor );
+
+    if ((info & 0x40000000) == 0)
+    {
+        DWORD build = platform;
+        printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
+    }
+
+    char system_dir[MAX_PATH];
+    char computer_name[MAX_COMPUTERNAME_LENGTH+1];
+    DWORD size = sizeof(computer_name);
+    GetSystemDirectory(system_dir, MAX_PATH);
+    GetComputerNameA(computer_name, &size);
+    printf("System directory: %s\n", system_dir); // System directory: C:\Windows
+    printf("Computer name: %s\n", computer_name);
 
     return 0;
 
