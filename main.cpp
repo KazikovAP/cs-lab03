@@ -151,7 +151,7 @@ int main(int argc,char*argv[])
 
 
 
-    size_t number_count;
+    /*size_t number_count;
     cerr << "Enter number count: ";
     cin >> number_count;
 
@@ -163,6 +163,6 @@ int main(int argc,char*argv[])
 
     find_minmax(numbers, min, max);
     const auto bins = make_histogram(numbers, bin_count);
-    show_histogram_svg(bins, bin_count);
+    show_histogram_svg(bins, bin_count);*/
 return 0;
 }
