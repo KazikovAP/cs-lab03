@@ -30,6 +30,8 @@ void find_minmax(const vector<double>& numbers, double& min, double& max)
 
 vector<size_t> make_histogram (struct Input& data)
 {
+    const size_t SCREEN_WIDTH = 80;
+    const size_t MAX_ASTERISK = SCREEN_WIDTH - 4 - 1;
     double min;
     double max;
     find_minmax(data.numbers, min, max);
