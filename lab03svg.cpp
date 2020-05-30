@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include <sstream>
+using namespace std;
 
 DWORD WINAPI GetVersion(void);
 
@@ -21,11 +22,11 @@ make_info_text1()
     DWORD platform = info >> 16;
     DWORD version_major = version & mask_major;
     DWORD version_minor = version >> 8;
-    printf("Windows 16x-version is %x\n", version );
+    /*printf("Windows 16x-version is %x\n", version );
     printf("Windows decimal-version is %u\n", version );
     printf("Platform is %u\n", platform );
     printf("Windows major version is %u\n", version_major );
-    printf("Windows minor version is %u\n", version_minor );
+    printf("Windows minor version is %u\n", version_minor );*/
 
     if ((info & 0x40000000) == 0)
     {
@@ -74,13 +75,12 @@ void svg_begin(double width, double height)
 void svg_end()
 {
     cout << "</svg>\n";
-
 }
+
 
 void svg_text(double left, double baseline, string text)
 {
     cout << "<text x='" << left << "' y='" << baseline <<"'>" <<text <<"</text>";
-
 }
 
 void svg_rect(double x, double y, double width, double height,string stroke,string fill)
@@ -88,11 +88,9 @@ void svg_rect(double x, double y, double width, double height,string stroke,stri
     cout << "<rect x='"<<x<< "' y='" <<y<<"' width='" <<width <<"' height='" <<height <<"' stroke='"<<stroke<<"' fill='"<<fill<<"'/>";
 }
 
-void show_histogram_svg(const vector<size_t>& bins)
+void show_histogram_svg(const vector<size_t>& bins, Input& data)
 {
     size_t bin_count = bins.size();
-    vector<string> colors_vec(bin_count);
-    colors_vec=colors(bin_count);
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
@@ -103,11 +101,19 @@ void show_histogram_svg(const vector<size_t>& bins)
     double top = 0;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     size_t t=0;
+    size_t max_count = 0;
+    for (size_t count : bins) {
+        if (count > max_count) {
+            max_count = count;
+        }
+    }
     for (size_t bin : bins)
     {
+        const double scaling_factor = (double)(IMAGE_HEIGHT - BIN_HEIGHT) / max_count;
+        const double bin_height = bin * scaling_factor;
         const double bin_width = BLOCK_WIDTH * bin;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,colors_vec[t],colors_vec[t]);
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, data.cin_colors[t], data.cin_colors[t]);
         top += BIN_HEIGHT;
         t++;
     }
@@ -115,11 +121,3 @@ void show_histogram_svg(const vector<size_t>& bins)
     svg_text(1,top+ 4*TEXT_BASELINE, make_info_text2());
     svg_end();
 }
-
-/*string make_info_text()
-{
-    stringstream buffer;
-    // TODO: получить версию системы, записать в буфер.
-    // TODO: получить имя компьютера, записать в буфер.
-    return buffer.str();
-}*/
