@@ -8,8 +8,6 @@
 #include <windows.h>
 #include <stdio.h>
 
-
-
 using namespace std;
 
 vector<double> input_numbers(istream& in, size_t count)
@@ -17,7 +15,17 @@ vector<double> input_numbers(istream& in, size_t count)
     vector<double> result(count);
     for (size_t i = 0; i < count; i++)
     {
-        cin >> result[i];
+        in >> result[i];
+    }
+    return result;
+}
+
+vector<string> input_colors(istream& in, size_t count)
+{
+    vector<string> result(count);
+    for (size_t i = 0; i < count; i++)
+    {
+        in >> result[i];
     }
     return result;
 }
@@ -27,6 +35,8 @@ read_input(istream& in, bool prompt)
 {
     Input data;
     size_t number_count;
+    size_t bin_count;
+    size_t i;
     if (prompt)
     {
         cerr << "Enter number count:";
@@ -37,12 +47,18 @@ read_input(istream& in, bool prompt)
 
         cerr << "Enter column count:";
         in >> data.bin_count;
+
+        //for (i = 0; i < bin_count; i++)
+        cerr << "Enter colors:";
+        data.cin_colors = input_colors(in, number_count);
     }
     else
     {
         in >> number_count;
         data.numbers = input_numbers(in, number_count);
         in >> data.bin_count;
+        //for (i = 0; i < bin_count; i++)
+        data.cin_colors = input_colors(in, number_count);
     }
     return data;
 }
@@ -67,6 +83,7 @@ download(const string& address)
     CURL *curl = curl_easy_init();
     if(curl)
     {
+
         CURLcode res;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
@@ -89,6 +106,7 @@ download(const string& address)
         }
     }
 
+
     return read_input(buffer, false);
 }
 
@@ -107,7 +125,7 @@ int main(int argc,char*argv[])
 
     const auto bins = make_histogram(input);
 
-    show_histogram_svg(bins);
+    show_histogram_svg(bins, input);
 
-return 0;
+    return 0;
 }
