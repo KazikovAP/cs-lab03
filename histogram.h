@@ -10,6 +10,7 @@ struct Input
 {
     vector<double> numbers;
     size_t bin_count;
+    vector<string> cin_colors;
 };
 
 void find_minmax(const vector<double>& numbers, double& min, double& max);
