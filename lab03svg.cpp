@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <stdio.h>
 #include <sstream>
+#include "histogram.h"
+
 using namespace std;
 
 DWORD WINAPI GetVersion(void);
@@ -89,8 +91,11 @@ void svg_rect(double x, double y, double width, double height,string stroke,stri
 }
 
 void show_histogram_svg(const vector<size_t>& bins, Input& data)
+
 {
     size_t bin_count = bins.size();
+    //vector<string> colors_vec(bin_count);
+    //colors_vec=colors(bin_count);
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
@@ -107,11 +112,15 @@ void show_histogram_svg(const vector<size_t>& bins, Input& data)
             max_count = count;
         }
     }
+    double scaling_factor = 1;
+    if (max_count*BLOCK_WIDTH > (IMAGE_WIDTH-TEXT_WIDTH))
+        {
+    scaling_factor = (double)(IMAGE_WIDTH - TEXT_WIDTH) / (max_count * BLOCK_WIDTH);}
     for (size_t bin : bins)
     {
-        const double scaling_factor = (double)(IMAGE_HEIGHT - BIN_HEIGHT) / max_count;
-        const double bin_height = bin * scaling_factor;
-        const double bin_width = BLOCK_WIDTH * bin;
+
+
+        const double bin_width = BLOCK_WIDTH * bin * scaling_factor;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
         svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, data.cin_colors[t], data.cin_colors[t]);
         top += BIN_HEIGHT;
